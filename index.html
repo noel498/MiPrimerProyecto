@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<base href="https://oy22qybgybqq4.ok.kimi.link">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos Express | Satélite Norte - Productos Reales</title>
+    
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SweetAlert2 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- FontAwesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top" id="navbar-principal">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#inicio" id="logo-tienda">
+                <i class="fas fa-shopping-basket me-2"></i>
+                Pedidos Express
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#inicio">
+                            <i class="fas fa-home me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#categorias">
+                            <i class="fas fa-th-large me-1"></i>Categorías
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#productos">
+                            <i class="fas fa-box me-1"></i>Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto">
+                            <i class="fas fa-phone me-1"></i>Contacto
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="input-group me-3">
+                        <input type="text" class="form-control search-input" placeholder="Buscar productos..." 
+                               style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3);">
+                        <button class="btn btn-outline-light" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    
+                    <button class="btn btn-warning position-relative" id="cart-btn" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger carrito-badge" id="cart-count">
+                            0
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section text-white text-center position-relative">
+        <div class="particles" id="particles"></div>
+        <div class="container position-relative z-index-1">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto">
+                    <h1 class="hero-title mb-4">
+                        <i class="fas fa-rocket me-3"></i>
+                        Pedidos Express Satélite Norte
+                    </h1>
+                    <p class="lead fs-3 mb-5" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                        Los mejores productos al mejor precio, <br>
+                        <strong class="text-warning">¡Entrega en minutos!</strong>
+                    </p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <button class="btn btn-warning btn-lg px-4 py-3 fw-bold" onclick="scrollToSection('categorias')">
+                            <i class="fas fa-shopping-bag me-2"></i>Comprar Ahora
+                        </button>
+                        <button class="btn btn-outline-light btn-lg px-4 py-3 fw-bold" onclick="scrollToSection('productos')">
+                            <i class="fas fa-fire me-2"></i>Ofertas Especiales
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categorias" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-4 fw-bold text-primary mb-3">
+                    <i class="fas fa-th-large me-3"></i>Categorías
+                </h2>
+                <p class="lead text-muted">Explora nuestras diferentes categorías de productos</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="card category-card h-100 shadow-sm border-0" onclick="filterProducts('bebidas')">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-wine-bottle category-icon text-primary mb-3"></i>
+                            <h5 class="card-title">Bebidas</h5>
+                            <p class="card-text text-muted">Refrescos, jugos, agua</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="card category-card h-100 shadow-sm border-0" onclick="filterProducts('snacks')">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-cookie-bite category-icon text-success mb-3"></i>
+                            <h5 class="card-title">Snacks</h5>
+                            <p class="card-text text-muted">Galletas, papas, dulces</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="card category-card h-100 shadow-sm border-0" onclick="filterProducts('limpieza')">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-spray-can category-icon text-info mb-3"></i>
+                            <h5 class="card-title">Limpieza</h5>
+                            <p class="card-text text-muted">Detergentes, jabones</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="card category-card h-100 shadow-sm border-0" onclick="filterProducts('carnes')">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-drumstick-bite category-icon text-danger mb-3"></i>
+                            <h5 class="card-title">Carnes</h5>
+                            <p class="card-text text-muted">Pollo, res, cerdo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="productos" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-4 fw-bold text-primary mb-3">
+                    <i class="fas fa-box me-3"></i>Productos
+                </h2>
+                <p class="lead text-muted">Selecciona tus productos favoritos y añádelos al carrito</p>
+            </div>
+            
+            <div class="row g-4" id="products-container">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-5 bg-dark text-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-phone me-3"></i>Contacto
+                </h2>
+                <p class="lead">¿Necesitas ayuda? ¡Contáctanos!</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="contact-info">
+                        <h4 class="mb-4">
+                            <i class="fas fa-store text-warning me-2"></i>
+                            Información de Contacto
+                        </h4>
+                        <div class="mb-3">
+                            <i class="fas fa-map-marker-alt text-warning me-2"></i>
+                            <span>Av. Principal Satélite Norte, Local #45</span>
+                        </div>
+                        <div class="mb-3">
+                            <i class="fas fa-phone text-warning me-2"></i>
+                            <span>+58 412-1234567</span>
+                        </div>
+                        <div class="mb-3">
+                            <i class="fab fa-whatsapp text-success me-2"></i>
+                            <span>+58 412-1234567</span>
+                        </div>
+                        <div class="mb-4">
+                            <i class="fas fa-clock text-warning me-2"></i>
+                            <span>Lunes a Domingo: 8:00 AM - 10:00 PM</span>
+                        </div>
+                        
+                        <button class="btn btn-success btn-lg" onclick="openWhatsApp()">
+                            <i class="fab fa-whatsapp me-2"></i>
+                            Chatear por WhatsApp
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="social-links">
+                        <h4 class="mb-4">
+                            <i class="fas fa-share-alt text-warning me-2"></i>
+                            Redes Sociales
+                        </h4>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="#" class="btn btn-primary btn-lg">
+                                <i class="fab fa-instagram me-2"></i>Instagram
+                            </a>
+                            <a href="#" class="btn btn-primary btn-lg">
+                                <i class="fab fa-facebook me-2"></i>Facebook
+                            </a>
+                            <a href="#" class="btn btn-danger btn-lg">
+                                <i class="fab fa-tiktok me-2"></i>TikTok
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="cartModalLabel">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        Carrito de Compras
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cart-items">
+                        <!-- Cart items will be dynamically loaded here -->
+                    </div>
+                    <div class="cart-total-section mt-4 p-3 bg-light rounded">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-0">Total: <span id="cart-total" class="text-primary fw-bold">Bs 0.00</span></h5>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <button class="btn btn-danger me-2" onclick="clearCart()">
+                                    <i class="fas fa-trash me-1"></i>Vaciar Carrito
+                                </button>
+                                <button class="btn btn-success" onclick="proceedToCheckout()">
+                                    <i class="fas fa-credit-card me-1"></i>Proceder a Pagar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="checkoutModalLabel">
+                        <i class="fas fa-credit-card me-2"></i>
+                        Finalizar Compra
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkout-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="mb-3">Información del Cliente</h5>
+                                <div class="mb-3">
+                                    <label for="customerName" class="form-label">Nombre Completo *</label>
+                                    <input type="text" class="form-control" id="customerName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="customerPhone" class="form-label">Teléfono *</label>
+                                    <input type="tel" class="form-control" id="customerPhone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="customerAddress" class="form-label">Dirección de Entrega *</label>
+                                    <textarea class="form-control" id="customerAddress" rows="3" required></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h5 class="mb-3">Método de Pago</h5>
+                                <div class="payment-methods">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentTransfer" value="transferencia" checked>
+                                        <label class="form-check-label" for="paymentTransfer">
+                                            <i class="fas fa-university me-2 text-primary"></i>
+                                            Transferencia Bancaria
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentPagoMovil" value="pagomovil">
+                                        <label class="form-check-label" for="paymentPagoMovil">
+                                            <i class="fas fa-mobile-alt me-2 text-success"></i>
+                                            Pago Móvil
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentCash" value="efectivo">
+                                        <label class="form-check-label" for="paymentCash">
+                                            <i class="fas fa-money-bill me-2 text-warning"></i>
+                                            Efectivo (Contra Entrega)
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentWhatsApp" value="whatsapp">
+                                        <label class="form-check-label" for="paymentWhatsApp">
+                                            <i class="fab fa-whatsapp me-2 text-success"></i>
+                                            Pago por WhatsApp
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="order-summary mt-4 p-3 border rounded">
+                                    <h6 class="fw-bold mb-2">Resumen del Pedido</h6>
+                                    <div id="order-summary">
+                                        <!-- Order summary will be loaded here -->
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Total a Pagar:</strong>
+                                        <strong class="text-success" id="final-total">Bs 0.00</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-1"></i>Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-check me-1"></i>Confirmar Pedido
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>
+                        <i class="fas fa-shopping-basket me-2"></i>
+                        Pedidos Express Satélite Norte
+                    </h5>
+                    <p class="mb-0">Tu tienda de confianza en Satélite Norte</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0">
+                        <i class="fas fa-heart text-danger me-1"></i>
+                        Hecho con amor para nuestra comunidad
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
