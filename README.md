@@ -1,7 +1,11 @@
+🌍 URL Pública del Proyecto
+📢 Visita el sitio web oficial del proyecto aquí:
+https://noel498.github.io/MiPrimerProyecto/
+
+---
 
 El proyecto propone el diseño y desarrollo de una aplicación móvil enfocada en la venta y entrega de productos alimenticios en la zona de Satélite Norte, municipio de Warnes (Santa Cruz, Bolivia). Surge de la necesidad de modernizar el comercio local y facilitar el acceso de los consumidores a alimentos sin desplazarse físicamente.
 La aplicación permitirá realizar pedidos en línea, consultar precios actualizados, visualizar productos con imágenes y descripciones, además de ofrecer un canal confiable entre clientes, tiendas y repartidores locales. También busca impulsar el crecimiento de pequeños negocios, ayudándoles a digitalizar sus ventas.
-
 
 ---
 
