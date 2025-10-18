@@ -86,6 +86,13 @@ Integrante	Rol	Función principal
 Estrada Paredes Alexanders	Programador y diseñador	Encargado del diseño visual, estructura del sistema y codificación.
 Hurtado Quiroga Noel Antony	Analista y gestor del proyecto	Responsable de la planificación, requerimientos y coordinación general.
 
+📸 Imagen del Equipo de Trabajo
+A continuación, se presenta al equipo desarrollador del proyecto NetCore: 🖼
+
+
+
+
+
 
 
 ---
