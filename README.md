@@ -94,9 +94,9 @@ Hurtado Quiroga Noel Antony	Analista y gestor del proyecto	Responsable de la pla
 A continuación, se presenta al equipo desarrollador del proyecto NetCore: 🖼
 
 
-
-
-
+<p align="center">
+  <img src="imagen.jpeg" alt="Equipo de trabajo NetCore" width="400">
+</p>
 
 
 ---
