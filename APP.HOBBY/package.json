@@ -1,0 +1,17 @@
+{
+  "name": "tienda-hobby",
+  "version": "1.0.0",
+  "description": "Tienda online moderna para hobbies",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 3000",
+    "dev": "npx live-server --port=3000"
+  },
+  "keywords": ["tienda", "online", "hobby", "ecommerce"],
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  }
+}

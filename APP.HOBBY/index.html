@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Express - Tu tienda online rápida y confiable</title>
+    
+    <!-- 
+    INSTRUCTIVO DE CONFIGURACIÓN:
+    
+    1. TASA DE CAMBIO: Cambiar la variable 'EXCHANGE_RATE' en app.js (línea ~15)
+       Ejemplo: const EXCHANGE_RATE = 6.96; // 1 USD = 6.96 Bs
+    
+    2. CREDENCIALES ADMIN: Cambiar en app.js (línea ~20)
+       Email: admin@tienda.com
+       Contraseña: seven734 (cumple todas las validaciones)
+    
+    3. PRODUCTOS: Modificar el array 'products' en app.js para agregar/cambiar productos
+    
+    4. OFERTAS: Cambiar el array 'specialOffers' en app.js para modificar ofertas especiales
+    -->
+    
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-bolt"></i> Tienda Express</h1>
+                <span class="tagline">Envío Express • Compra Segura • Entrega Rápida</span>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#inicio" onclick="showSection('inicio')">Inicio</a></li>
+                    <li><a href="#productos" onclick="showSection('productos')">Productos</a></li>
+                    <li><a href="#ofertas" onclick="showSection('ofertas')">Ofertas</a></li>
+                    <li><a href="#contacto" onclick="showSection('contacto')">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="user-menu" id="userMenu">
+                    <i class="fas fa-user" onclick="toggleUserMenu()"></i>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div id="loginForm" class="auth-form">
+                            <h4>Iniciar Sesión</h4>
+                            <input type="email" id="loginEmail" placeholder="Correo electrónico">
+                            <input type="password" id="loginPassword" placeholder="Contraseña">
+                            <button onclick="login()">Iniciar Sesión</button>
+                            <p onclick="showRegisterForm()">¿No tienes cuenta? Regístrate</p>
+                        </div>
+                        <div id="registerForm" class="auth-form" style="display: none;">
+                            <h4>Registrarse</h4>
+                            <input type="text" id="registerName" placeholder="Nombre completo">
+                            <input type="email" id="registerEmail" placeholder="Correo electrónico">
+                            <input type="password" id="registerPassword" placeholder="Contraseña">
+                            <button onclick="register()">Registrarse</button>
+                            <p onclick="showLoginForm()">¿Ya tienes cuenta? Inicia sesión</p>
+                        </div>
+                        <div id="userInfo" class="user-info" style="display: none;">
+                            <p>Bienvenido, <span id="userName"></span></p>
+                            <button onclick="logout()">Cerrar Sesión</button>
+                            <button onclick="showAdminPanel()" id="adminBtn" style="display: none;">Panel Admin</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Inicio Section -->
+        <section id="inicio" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>Envío Express en 24 Horas</h2>
+                    <p>Descubre miles de productos con entrega rápida y segura en toda Bolivia</p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <i class="fas fa-shipping-fast"></i>
+                            <span>Envío Express</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Compra Segura</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-undo"></i>
+                            <span>Devoluciones Fáciles</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-headset"></i>
+                            <span>Soporte 24/7</span>
+                        </div>
+                    </div>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="showSection('productos')">Comprar Ahora</button>
+                        <button class="btn-secondary" onclick="showSection('ofertas')">Ver Ofertas</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="floating-card">
+                        <i class="fas fa-box"></i>
+                        <span>Envío Gratis</span>
+                        <small>En compras +Bs 200</small>
+                    </div>
+                    <div class="floating-card secondary">
+                        <i class="fas fa-clock"></i>
+                        <span>24 Horas</span>
+                        <small>Entrega Express</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Productos Section -->
+        <section id="productos" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Nuestros Productos</h2>
+                    <p>Descubre nuestra amplia gama de productos con envío express</p>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="search-section">
+                    <div class="search-bar">
+                        <input type="text" id="mainSearchInput" placeholder="¿Qué estás buscando?" onkeyup="searchProducts()">
+                        <button class="search-btn" onclick="searchProducts()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="products-filter">
+                    <select id="categoryFilter" onchange="filterProducts()">
+                        <option value="all">Todas las categorías</option>
+                        <option value="electronica">Electrónica</option>
+                        <option value="hogar">Hogar</option>
+                        <option value="moda">Moda</option>
+                        <option value="deportes">Deportes</option>
+                    </select>
+                    <select id="sortFilter" onchange="sortProducts()">
+                        <option value="default">Ordenar por</option>
+                        <option value="price-low">Precio: Menor a Mayor</option>
+                        <option value="price-high">Precio: Mayor a Menor</option>
+                        <option value="name">Nombre A-Z</option>
+                    </select>
+                </div>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Los productos se cargarán dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Ofertas Section -->
+        <section id="ofertas" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Ofertas Especiales</h2>
+                    <p>No te pierdas estas increíbles ofertas con descuentos limitados</p>
+                </div>
+                <div class="offers-grid" id="offersGrid">
+                    <!-- Las ofertas se cargarán dinámicamente -->
+                </div>
+                <div class="offers-cta">
+                    <button class="btn-primary" onclick="showSection('productos')">Ver Todos los Productos</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contacto Section -->
+        <section id="contacto" class="section">
+            <div class="container">
+                <h2>Contacto</h2>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Ubicación</h4>
+                                <p>Av. 6 de Agosto #1234<br>La Paz, Bolivia</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Teléfono</h4>
+                                <p>+591 2 1234567<br>+591 7 12345678</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Horario</h4>
+                                <p>Lunes - Viernes: 8:00 - 20:00<br>Sábados: 9:00 - 18:00<br>Domingos: 10:00 - 16:00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="social-media">
+                        <h4>Síguenos en Redes Sociales</h4>
+                        <div class="social-links">
+                            <a href="#" class="social-link facebook">
+                                <i class="fab fa-facebook-f"></i>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="#" class="social-link instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="#" class="social-link tiktok">
+                                <i class="fab fa-tiktok"></i>
+                                <span>TikTok</span>
+                            </a>
+                            <a href="#" class="social-link whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel Section -->
+        <section id="adminPanel" class="section">
+            <div class="container">
+                <h2>Panel Administrativo</h2>
+                <div class="admin-tabs">
+                    <button class="tab-btn active" onclick="showAdminTab('products')">Productos</button>
+                    <button class="tab-btn" onclick="showAdminTab('orders')">Pedidos</button>
+                </div>
+                
+                <!-- Products Tab -->
+                <div id="adminProducts" class="admin-tab-content active">
+                    <div class="admin-actions">
+                        <button class="btn-primary" onclick="showAddProductForm()">
+                            <i class="fas fa-plus"></i> Agregar Producto
+                        </button>
+                    </div>
+                    <div class="admin-products-grid" id="adminProductsGrid">
+                        <!-- Los productos del admin se cargarán aquí -->
+                    </div>
+                </div>
+                
+                <!-- Orders Tab -->
+                <div id="adminOrders" class="admin-tab-content">
+                    <div class="orders-list" id="ordersList">
+                        <!-- Los pedidos se cargarán aquí -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Carrito de Compras</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Los items del carrito se mostrarán aquí -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: Bs <span id="cartTotal">0</span></strong>
+            </div>
+            <button class="btn-checkout" onclick="proceedToCheckout()">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+    <!-- Order Form Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Pedido</h3>
+                <button class="close-modal" onclick="closeOrderModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label for="customerName">Nombre Completo *</label>
+                        <input type="text" id="customerName" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerEmail">Correo Electrónico *</label>
+                        <input type="email" id="customerEmail" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerPhone">Teléfono/WhatsApp *</label>
+                        <input type="tel" id="customerPhone" placeholder="+591 7xxxxxxx" required>
+                        <div class="error-message" id="phoneError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerAddress">Dirección *</label>
+                        <textarea id="customerAddress" required></textarea>
+                        <div class="error-message" id="addressError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerPassword">Contraseña *</label>
+                        <input type="password" id="customerPassword" required>
+                        <div class="error-message" id="passwordError"></div>
+                        <div class="password-requirements">
+                            <p>La contraseña debe tener:</p>
+                            <ul>
+                                <li id="lengthReq">Mínimo 8 caracteres</li>
+                                <li id="lowerReq">Una letra minúscula</li>
+                                <li id="upperReq">Una letra mayúscula</li>
+                                <li id="numberReq">Un número</li>
+                                <li id="symbolReq">Un símbolo</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="order-summary">
+                        <h4>Resumen del Pedido</h4>
+                        <div id="orderSummaryItems"></div>
+                        <div class="order-total">
+                            <strong>Total: Bs <span id="orderTotal"></span></strong>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Confirmar Pedido</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="productModalTitle">Agregar Producto</h3>
+                <button class="close-modal" onclick="closeProductModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    
+                    <div class="form-group">
+                        <label for="productName">Nombre del Producto *</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDescription">Descripción *</label>
+                        <textarea id="productDescription" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productPrice">Precio (USD) *</label>
+                        <input type="number" id="productPrice" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productCategory">Categoría *</label>
+                        <select id="productCategory" required>
+                            <option value="electronica">Electrónica</option>
+                            <option value="hogar">Hogar</option>
+                            <option value="moda">Moda</option>
+                            <option value="deportes">Deportes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productImage">URL de la Imagen *</label>
+                        <input type="url" id="productImage" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Guardar Producto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <h3><i class="fas fa-bolt"></i> Tienda Express</h3>
+                        <p>Tu tienda de confianza con envío express en Bolivia</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Comprar</h4>
+                    <ul>
+                        <li><a href="#" onclick="showSection('productos')">Productos</a></li>
+                        <li><a href="#" onclick="showSection('ofertas')">Ofertas</a></li>
+                        <li><a href="#" onclick="showSection('contacto')">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Ayuda</h4>
+                    <ul>
+                        <li><a href="#" onclick="showHelp()">Centro de Ayuda</a></li>
+                        <li><a href="#" onclick="showHelp()">Envíos y Devoluciones</a></li>
+                        <li><a href="#" onclick="showHelp()">Términos y Condiciones</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Métodos de Pago</h4>
+                    <div class="payment-methods">
+                        <i class="fas fa-mobile-alt" title="Tigo Money"></i>
+                        <i class="fas fa-qrcode" title="QR"></i>
+                        <i class="fab fa-whatsapp" title="WhatsApp"></i>
+                        <i class="fas fa-credit-card" title="Tarjeta"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Tienda Express Bolivia. Todos los derechos reservados.</p>
+                <div class="footer-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>La Paz, Bolivia</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
