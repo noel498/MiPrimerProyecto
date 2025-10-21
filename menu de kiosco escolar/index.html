@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiosko Escolar - Menú Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Kiosko Escolar</h1>
+                    <p>Menú Digital</p>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button class="admin-btn" onclick="solicitarAccesoAdmin()">
+                    <i class="fas fa-lock"></i>
+                    <span>Admin</span>
+                </button>
+                <div class="cart-badge" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Carrito</span>
+                    <div class="cart-count" id="cartCount">0</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h2>🎉 ¡Bienvenido a Nuestro Menú! 🎉</h2>
+            <p>Descubre nuestros deliciosos productos. Selecciona tus favoritos y realiza tu pedido fácilmente.</p>
+        </div>
+
+        <div class="filters">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar productos...">
+                <i class="fas fa-search"></i>
+            </div>
+            <button class="filter-btn active" data-category="todos" onclick="filterProducts('todos')">
+                <i class="fas fa-th"></i> Todos
+            </button>
+            <button class="filter-btn" data-category="bebidas" onclick="filterProducts('bebidas')">
+                <i class="fas fa-glass-whiskey"></i> Bebidas
+            </button>
+            <button class="filter-btn" data-category="comidas" onclick="filterProducts('comidas')">
+                <i class="fas fa-utensils"></i> Comidas
+            </button>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-shopping-cart"></i> Mi Pedido</h3>
+                <button class="close-btn" onclick="toggleCart()">×</button>
+            </div>
+            <div class="modal-body" id="cartItems">
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-basket"></i>
+                    <p>Tu carrito está vacío</p>
+                </div>
+            </div>
+            <div class="modal-footer" id="cartFooter" style="display: none;">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="totalPrice">0.00 Bs</span>
+                </div>
+                <button class="checkout-btn" onclick="enviarWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                    Enviar Pedido por WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+                <h3><i class="fas fa-cog"></i> Panel de Administración</h3>
+                <button class="close-btn" onclick="toggleAdmin()">×</button>
+            </div>
+            <div class="modal-body">
+                <h4 style="margin-bottom: 1rem; color: var(--dark);">Agregar Nuevo Producto</h4>
+                <form id="addProductForm" onsubmit="agregarProducto(event)">
+                    <div class="form-group">
+                        <label for="productName">Nombre del Producto</label>
+                        <input type="text" id="productName" required placeholder="Ej: Pizza">
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Precio (Bs)</label>
+                        <input type="number" id="productPrice" step="0.01" min="0" required placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Imagen del Producto</label>
+                        <input type="file" id="productImage" accept="image/*" style="display: none;" onchange="previsualizarImagen(event)">
+                        <div class="image-upload-area" id="uploadArea" onclick="document.getElementById('productImage').click()">
+                            <div id="uploadPlaceholder">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <p class="upload-text">Haz clic para subir una imagen</p>
+                                <p class="upload-text" style="font-size: 0.8rem; margin-top: 0.5rem;">JPG, PNG o GIF</p>
+                            </div>
+                            <img id="imagePreview" class="image-preview" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Categoría</label>
+                        <select id="productCategory" required>
+                            <option value="comidas">Comidas</option>
+                            <option value="bebidas">Bebidas</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i> Agregar Producto
+                    </button>
+                </form>
+
+                <div class="admin-products-list">
+                    <h4 style="margin-bottom: 1rem; color: var(--dark);">Productos Actuales</h4>
+                    <div id="adminProductsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+ <footer>
+        <div class="footer-content">
+            <div class="footer-title">Todos los derechos reservados por:</div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="name">FABIANA TOLAVE MERCADO</div>
+                    <div class="role">PRODUCT OWNER</div>
+                </div>
+                <div class="team-member">
+                    <div class="name">LUIS ANDRIU ARANCIBIA JUSTINIANO</div>
+                    <div class="role">SCRUM MASTER</div>
+                </div>
+                <div class="team-member">
+                    <div class="name">NOEL ANTONY HURTADO QUIROGA</div>
+                    <div class="role">DESARROLLADOR</div>
+                </div>
+                <div class="team-member">
+                    <div class="name">DEIBY YOEL YARHUI HUARACHI</div>
+                    <div class="role">DESARROLLADOR</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="scrit.js"></script>
+
+</body>
+</html>
